@@ -1,0 +1,16 @@
+@charset 'UTF-8';
+/*
+ * jQuery File Upload Plugin CSS Example 1.0
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2012, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+
+.dropbox_area {
+    padding:20px; 
+    border:5px dashed #efefef ;
+} 

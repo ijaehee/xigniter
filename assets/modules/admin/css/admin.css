@@ -1,0 +1,5 @@
+body { }
+.header .well small { color:#ccc;}
+.body_wrapper {padding-left:300px; }
+.body_wrapper .sidebar {margin-left:-300px;float:left; padding-left:20px;}
+.body_wrapper .content {padding-top:30px; padding-right:20px;}
