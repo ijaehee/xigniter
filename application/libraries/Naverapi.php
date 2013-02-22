@@ -4,7 +4,7 @@ class Naverapi {
 
     public function __construct(){ 
         $ci = &get_instance() ; 
-        $ci->config->load('apikey', FALSE, TRUE);
+        $ci->config->load('naver', FALSE, TRUE);
     }
 
     public function getGeocode($address){
@@ -98,8 +98,8 @@ class Naverapi {
         foreach($rss_data as $item){ 
             $data = new stdClass ; 
 
-            $data->x = strval($item->point->x );
-            $data->y = strval($item->point->y );
+            $data->lng = strval($item->point->x );
+            $data->lat = strval($item->point->y );
 
             $arr[] = $data ; 
         }

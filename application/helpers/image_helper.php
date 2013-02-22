@@ -1,7 +1,6 @@
 <?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 function thumbImage($module_name,$sub_dir='tmp',$filename, $width=150, $height=100, $type='crop'){ 
-
     if(!is_file($filename)){ 
         return '' ; 
     }

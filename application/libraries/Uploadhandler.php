@@ -41,12 +41,20 @@ class Uploadhandler {
 
         $ci->load->library('upload') ; 
         if(!$ci->upload->do_upload($upload_field)){
+            $ci->upload->display_errors() ; 
             return null ; 
         }
 
         $data = $ci->upload->data(); 
 
         $today = date("Ymd") ; 
+
+        !is_dir('files') ? mkdir('files',0777) : null ; 
+        !is_dir('files/temp') ? mkdir('files/temp',0777) : null ; 
+        !is_dir('files/filebox') ? mkdir('files/filebox',0777) : null ; 
+        !is_dir('files/filebox/img') ? mkdir('files/filebox/img',0777) : null ; 
+        !is_dir('files/filebox/binary') ? mkdir('files/filebox/binary',0777) : null ;
+
 
         $save_dir = $data['is_image'] == 1 ? './files/filebox/img/'.$today : './files/filebox/binary/'.$today ;
 
@@ -198,20 +206,22 @@ class Uploadhandler {
     public function insertToDB($upload_data){
         $ci = &get_instance() ; 
         $ci->load->model('filebox/filebox_model','filebox'); 
+
+        $args = array() ; 
         
-        $args->file_type = $upload_data['file_type'] ; 
-        $args->encrypted_file_name = $upload_data['file_name'] ; 
-        $args->original_file_name = $upload_data['orig_name'] ; 
-        $args->file_ext = $upload_data['file_ext'] ; 
-        $args->file_size_kb = $upload_data['file_size'] ; 
+        $args['file_type'] = $upload_data['file_type'] ; 
+        $args['encrypted_file_name'] = $upload_data['file_name'] ; 
+        $args['original_file_name'] = $upload_data['orig_name'] ; 
+        $args['file_ext'] = $upload_data['file_ext'] ; 
+        $args['file_size_kb'] = $upload_data['file_size'] ; 
         //$args->tags = $upload_data['tags'] ; 
-        $args->is_image = $upload_data['is_image'] ;
-        $args->image_type = $upload_data['image_type'] ; 
-        $args->image_height = $upload_data['image_height'];
-        $args->image_width = $upload_data['image_width']; 
-        $args->full_path = $upload_data['full_path']; 
-        $args->file_path = $upload_data['file_path']; 
-        $args->ip_address = '' ; 
+        $args['is_image'] = $upload_data['is_image'] ;
+        $args['image_type'] = $upload_data['image_type'] ; 
+        $args['image_height'] = $upload_data['image_height'];
+        $args['image_width'] = $upload_data['image_width']; 
+        $args['full_path'] = $upload_data['full_path']; 
+        $args['file_path'] = $upload_data['file_path']; 
+        $args['ip_address'] = '' ; 
 
         $ret_data = $ci->filebox->insert($args) ;
 

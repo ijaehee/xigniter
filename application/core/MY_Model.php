@@ -1,38 +1,54 @@
 <?php 
     class MY_Model extends CI_Model { 
+        protected $_table  ; 
+        protected $id_field  ; 
+
         public function __construct(){
             parent::__construct() ; 
             $this->load->helper('inflector') ; 
+            $this->load->helper('favoritefn') ; 
+            $this->load->database() ; 
 
             if(!$this->_table){
                 $this->_table = strtolower(plural(str_replace('_model','',get_class($this)))) ; 
             }
 
-            if(!$this->id){ 
+            if(!$this->id_field){ 
                 $this->id_field = strtolower(str_replace('_model','_id',get_class($this))) ; 
             }
         }
 
-        public function getOne($where){
+        public function get($where){ 
             return $this->db->where($where)
                             ->get($this->_table) 
                             ->row() ; 
         }
 
-        public function get(){
+        public function getItemById($hotel_id){ 
+            return $this->db->where($this->id_field,$hotel_id)->get($this->_table)->row() ; 
+        }
+
+        public function getItem(){
+            return $this->db->get($this->_table) 
+                            ->row() ; 
+        }
+
+        public function getItems(){
             $args = func_get_args() ; 
-            if(count($args) > 1 || is_array($args[0])){
+            
+            if($args!=null && (count($args) > 1 || is_array($args[0]))){
                 $this->db->where($args) ; 
-            }else{
-                $this->db->where('id',$args[0]) ; 
+            }else if(count($args) == 1 ){
+                $this->db->where($this->id_field,$args[0]) ; 
             }
+
             return $this->db->get($this->_table) 
                             ->result() ;
         }
 
         public function insert($data){ 
-            $data->{$this->id_field} = uid() ; 
-            $data['created_at' = $data['updated_at'] = date("Y-m-d H:i:s") ; 
+            $data[$this->id_field] = unique_id() ; 
+            $data['created_at'] = $data['updated_at'] = date("Y-m-d H:i:s") ; 
 
             if(!$this->validate($data)){
                 $success = FALSE ; 
@@ -52,9 +68,10 @@
             }else{ 
                 $this->db->where($this->id_field,$args[0]) ; 
             }
+
             $success = $this->db->update($this->_table, $args[1]) ; 
-            
-            return ($success) ? $data : FALSE ; 
+
+            return ($success) ? $args[1] : FALSE ; 
         } 
 
         public function delete($where){
@@ -84,18 +101,31 @@
             return $this ; 
         }
 
-        public function orderby($key,$order){
-            
+        public function getPagination($cur_page=1,$list_count=20){ 
+            $total_count = $this->db->count_all_results($this->_table) ; 
+
+            $pagination = array() ; 
+            $pagination['total_count'] = $total_count ; 
+            $pagination['list_count'] = $list_count ; 
+            $pagination['page'] = $cur_page ; 
+            $pagination['page_count'] = ceil($total_count/$list_count) ; 
+
+            return $pagination ; 
+        }
+
+        public function sorted($key=null,$order='desc'){ 
+            $idx = $key ? $key : $this->id_field ; 
+            $this->db->order_by($idx,$order) ; 
             return $this ; 
         }
 
-        public function paging($page, $list_count,$pagination=null){
-            
+        public function paging($page=1, $list_count=20){
+            $this->db->limit($list_count,($page-1)*$list_count) ;  
             return $this ; 
         }
 
         public function validate($data){
-            if($!empty($this->validate)){
+            if(!empty($this->validate)){
                 foreach($data as $key => $value){ 
                     $_POST[$key] = $value ; 
                 }

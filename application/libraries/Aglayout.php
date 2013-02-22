@@ -24,7 +24,7 @@ class Aglayout{
     public function add($view_file){ 
         $this->body[] = $view_file ; 
 
-        return $this->body ; 
+        return $this ; 
     } 
     
 
