@@ -9,8 +9,13 @@
 |	http://codeigniter.com/user_guide/general/hooks.html
 |
 */
-
-
+$hook['pre_system'] = array(
+        'class'    => 'ModuleManager',
+        'function' => 'install',
+        'filename' => 'ModuleManager.php',
+        'filepath' => 'hooks',
+        'params'   => array()
+        ); 
 
 /* End of file hooks.php */
 /* Location: ./application/config/hooks.php */

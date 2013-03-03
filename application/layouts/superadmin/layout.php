@@ -13,7 +13,6 @@
     <script>
     var base_url = "<?=base_url()?>" ; 
     </script>
-    <?= $_header_data?>
 </head>
 <body style="padding-top:20px;">
     <header class="navbar">
@@ -30,7 +29,5 @@
     <div class="contents">
     <?= $_contents ?>
     </div> 
-
-    <?= $_footer_data?>
 </body>
 </html>

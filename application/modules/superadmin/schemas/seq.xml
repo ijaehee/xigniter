@@ -1,0 +1,3 @@
+<table name="seq">
+    <column name="seq" type="int" size="11" auto_increment="true" primary_key="true" />
+</table>
