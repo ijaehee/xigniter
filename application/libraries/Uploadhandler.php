@@ -11,7 +11,7 @@ class Uploadhandler {
 
     }
 
-    public function uploadToExhb(){
+    public function upload_to_exhb(){
         $ci = &get_instance() ; 
 
         $ci->load->library('upload') ; 
@@ -40,6 +40,13 @@ class Uploadhandler {
         $ci = &get_instance() ; 
 
         $ci->load->library('upload') ; 
+
+        !is_dir('files') ? mkdir('files',0777) : null ; 
+        !is_dir('files/temp') ? mkdir('files/temp',0777) : null ; 
+        !is_dir('files/filebox') ? mkdir('files/filebox',0777) : null ; 
+        !is_dir('files/filebox/img') ? mkdir('files/filebox/img',0777) : null ; 
+        !is_dir('files/filebox/binary') ? mkdir('files/filebox/binary',0777) : null ;
+
         if(!$ci->upload->do_upload($upload_field)){
             $ci->upload->display_errors() ; 
             return null ; 
@@ -48,14 +55,7 @@ class Uploadhandler {
         $data = $ci->upload->data(); 
 
         $today = date("Ymd") ; 
-
-        !is_dir('files') ? mkdir('files',0777) : null ; 
-        !is_dir('files/temp') ? mkdir('files/temp',0777) : null ; 
-        !is_dir('files/filebox') ? mkdir('files/filebox',0777) : null ; 
-        !is_dir('files/filebox/img') ? mkdir('files/filebox/img',0777) : null ; 
-        !is_dir('files/filebox/binary') ? mkdir('files/filebox/binary',0777) : null ;
-
-
+        
         $save_dir = $data['is_image'] == 1 ? './files/filebox/img/'.$today : './files/filebox/binary/'.$today ;
 
         !is_dir($save_dir) ? mkdir($save_dir,0777) : null ; 
@@ -65,7 +65,7 @@ class Uploadhandler {
 
         $data['full_path'] = $dest  ;
         $data['file_path'] = $save_dir ; 
-        $ret = $this->insertToDB($data) ; 
+        $ret = $this->insert_to_db($data) ; 
 
         return $ret ;
     } 
@@ -153,7 +153,7 @@ class Uploadhandler {
 		return (in_array($file_type, $img_mimes, TRUE)) ? TRUE : FALSE;
 	}
 
-    public function createUploadPath($is_image = 0){
+    public function create_upload_path($is_image = 0){
         $today = date("Ymd") ; 
         $save_dir = $is_image == 1 ? './files/filebox/img/'.$today : './files/filebox/binary/'.$today ; 
         !is_dir($save_dir) ? mkdir($save_dir,0777) : null ;
@@ -161,7 +161,7 @@ class Uploadhandler {
         return $save_dir ; 
     } 
 
-    public function uploadFileFromServer($file_full_path) { 
+    public function upload_file_from_server($file_full_path) { 
         $ci = &get_instance() ; 
         $ci->load->model('filebox/filebox_model','filebox'); 
 
@@ -182,7 +182,7 @@ class Uploadhandler {
             $args->image_width = $obj->image_width ; 
         }
 
-        $save_dir = $this->createUploadPath($is_image) ; 
+        $save_dir = $this->create_upload_path($is_image) ; 
         $encrypted_file_name  = $this->set_filename($save_dir,$file_full_path,$file_ext) ; 
 
         $dest = $save_dir.'/'.$encrypted_file_name; 
@@ -203,7 +203,7 @@ class Uploadhandler {
         return $ret_data ; 
     }
 
-    public function insertToDB($upload_data){
+    public function insert_to_db($upload_data){
         $ci = &get_instance() ; 
         $ci->load->model('filebox/filebox_model','filebox'); 
 

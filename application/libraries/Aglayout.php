@@ -2,7 +2,7 @@
 
 class Aglayout{
     public $layout ;
-    public $moduleViewPath ; 
+    public $module_view_path ; 
     public static $header_data ;
     static $footer_data ; 
     public $body = array() ; 
@@ -15,10 +15,10 @@ class Aglayout{
         $this->layout ='./../layouts/'.$layout ; 
     }
 
-    public function moduleViewPath($path){
-        $this->moduleViewPath = $path ; 
+    public function module_view_path($path){
+        $this->module_view_path = $path ; 
 
-        return $this->moduleViewPath ; 
+        return $this->module_view_path ; 
     } 
 
     public function add($view_file){ 
@@ -28,7 +28,7 @@ class Aglayout{
     } 
     
 
-    public function addMetaData($where,$data){
+    public function add_meta_data($where,$data){
         self::$header_data = '<div class="hero-unit">hello</div>' ; 
     }
 
@@ -45,7 +45,7 @@ class Aglayout{
         $body_html = '' ; 
 
         foreach($this->body as $key => $row){
-            $body_html .= $this->ci->load->view($this->moduleViewPath.$row,$data,TRUE) ;
+            $body_html .= $this->ci->load->view($this->module_view_path.$row,$data,TRUE) ;
         }
         
         $data['_contents'] = $body_html ; 

@@ -13,7 +13,7 @@ class Ag_dbutil {
         return $this->CI->db->table_exists($table) ; 
     }
 
-    public function getSchemaPathList(){ 
+    public function get_schema_path_list(){ 
         $this->load->helper('directory') ; 
         $this->load->helper('file') ; 
         $map = directory_map(APP_PATH.'schemas',2); 

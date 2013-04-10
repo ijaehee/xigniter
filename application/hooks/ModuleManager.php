@@ -1,10 +1,16 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class ModuleManager {
+class ModuleManager { 
+
     public function install(){ 
         require_once(BASEPATH.'helpers/file_helper.php') ; 
         require_once(BASEPATH.'helpers/directory_helper.php') ; 
-        $this->_install('superadmin') ; 
+
+        $modules = directory_map(APPPATH.'modules/') ; 
+
+        foreach($modules as $module_name => $module){
+            $this->_install($module_name) ; 
+        }
     } 
 
     private function _install($module){
@@ -52,4 +58,5 @@ class ModuleManager {
         $files = directory_map($src_dir) ; 
         $this->make_node($src_dir,$dest_dir,0,$files) ; 
     }
+
 }
